@@ -8,5 +8,8 @@ public class TestBcrypt {
         System.out.println(gensalt);
         String password = BCrypt.hashpw("123456", gensalt);
         System.out.println(password);
+
+
+        
     }
 }
