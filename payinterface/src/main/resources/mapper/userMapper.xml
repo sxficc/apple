@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--suppress ALL -->
+<mapper namespace="com.comic.dao.IUser">
+
+    <resultMap id="tea_stu" type="com.comic.mould.Teacher">
+        <id column="id" property="id"/>
+        <result column="tname" property="name"/>
+        <result column="tage" property="age"/>
+        <collection property="student" ofType="com.comic.mould.Student">
+            <result column="sid" property="id"/>
+            <result column="sname" property="sname"/>
+            <result column="sage" property="sage"/>
+            <result column="tid" property="tid"/>
+            <collection property="classRoomList" ofType="com.comic.mould.ClassRoom">
+                <result column="rid" property="id"/>
+                <result column="classname" property="classname"/>
+            </collection>
+        </collection>
+    </resultMap>
+    <select id="findAllInfo" resultMap="tea_stu" parameterType="java.lang.Integer">
+        select t.id        as id,
+               t.name      as tname,
+               t.age       as tage,
+               s.id        as sid,
+               s.sname     as sname,
+               s.sage      as sage,
+               s.tid       as tid,
+               c.id        as rid,
+               c.classname as classname
+        from teacher t
+                 left join student s on s.tid = t.id
+                 left join classroom c on c.sid = s.id
+        where t.id = #{id}
+
+    </select>
+
+    <insert id="insertUsers" parameterType="java.util.List" useGeneratedKeys="true" >
+        <!--<selectKey resultType="int" keyProperty="id" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>-->
+        insert into student (sname,sage,tid) values
+        <foreach collection="students" item="student" index="index" separator="UNION ALL">
+            (#{student.sname},#{student.sage},#{student.tid})
+        </foreach>
+
+    </insert>
+</mapper>

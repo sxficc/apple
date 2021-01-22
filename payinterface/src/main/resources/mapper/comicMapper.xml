@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.comic.dao.IComicMasterDao">
+    <insert id="addComic" parameterType="com.comic.mould.ComicInfo">
+        insert into comicInfo values (null ,#{cname},#{sname},#{img},#{area},#{date},#{type},#{vurl},#{index},#{score},#{tags},#{info},null);
+    </insert>
+    <select id="findAll" resultType="com.comic.mould.ComicInfo">
+        select * from comicInfo
+    </select>
+    <select id="findById" parameterType="java.lang.Integer" resultType="com.comic.mould.ComicInfo">
+        select * from comicInfo where id = #{id};
+    </select>
+    <update id="update" parameterType="com.comic.mould.ComicInfo">
+        update comicInfo set cname = #{cname} ,sname = #{sname},img = #{img},area = #{area}, date = #{date}, type = #{type},vurl = #{vurl} where id = #{id};
+    </update>
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from  comicInfo where id = #{id};
+    </delete>
+
+    <select id="findByArea" resultType="com.comic.mould.ComicInfo">
+        select * from comicInfo where area = #{area}
+        <if test="limit!=null">
+            limit 0,#{limit}
+        </if>
+    </select>
+
+    <select id="findByDate" resultType="com.comic.mould.ComicInfo">
+        select * from comicInfo order by newDate desc
+        <if test="limit!=null">
+            limit 0,#{limit}
+        </if>
+    </select>
+
+    <select id="findByTags" resultType="com.comic.mould.ComicInfo">
+        select * from comicInfo where tags = #{tags}
+        <if test="limit!=null">
+            limit 0,#{limit}
+        </if>
+    </select>
+    <select id="findLikeName" resultType="com.comic.mould.ComicInfo" parameterType="java.lang.String">
+        select * from comicInfo where cname like "%"#{searchText}"%"
+
+    </select>
+    
+
+
+</mapper>
